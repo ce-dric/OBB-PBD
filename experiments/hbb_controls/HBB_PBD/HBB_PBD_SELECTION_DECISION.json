@@ -1,0 +1,139 @@
+{
+  "created_at_utc": "2026-08-13T18:30:56.662236+00:00",
+  "selection_source": "AVVG official-train-derived validation partition",
+  "selection_metric": "validation_mean_rotIoU",
+  "tie_break": "earlier epoch on exact stored-value tie",
+  "expected_validation_samples": 3956,
+  "selected_epoch": 5,
+  "selected_name": "HBB_PBD_epoch_5",
+  "selected_checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_5",
+  "selected_validation_metrics": {
+    "samples": 3956,
+    "decoded_pct": 99.79777553083923,
+    "mIoU": 0.23381286598706383,
+    "median_IoU": 0.029388823981601406,
+    "mIoU_aabb": 0.3320376518655054,
+    "median_IoU_aabb": 0.06402811044441606,
+    "acc25": 0.4011627906976744,
+    "acc50": 0.26061678463094035,
+    "acc75": 0.04221435793731042,
+    "acc50_aabb": 0.3647623862487361,
+    "angle_mae": 32.78003579025736,
+    "latency_ms": 321.65314178702897,
+    "boxes_per_sec": 3.108939009406953,
+    "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_5"
+  },
+  "candidates": [
+    {
+      "epoch": 1,
+      "name": "HBB_PBD_epoch_1",
+      "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_1",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.82305358948433,
+        "mIoU": 0.1881212405138416,
+        "median_IoU": 2.6086627849885627e-07,
+        "mIoU_aabb": 0.2726792898624601,
+        "median_IoU_aabb": 0.003716362006881978,
+        "acc25": 0.3288675429726997,
+        "acc50": 0.19261880687563196,
+        "acc75": 0.016683518705763397,
+        "acc50_aabb": 0.2901921132457027,
+        "angle_mae": 35.164347636048355,
+        "latency_ms": 322.90331224102954,
+        "boxes_per_sec": 3.096902267925809,
+        "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_1"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_PBD/validation/HBB_PBD_VALIDATION_EPOCH_1.json"
+    },
+    {
+      "epoch": 2,
+      "name": "HBB_PBD_epoch_2",
+      "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_2",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.51971688574318,
+        "mIoU": 0.21095793807235586,
+        "median_IoU": 0.003568755342609732,
+        "mIoU_aabb": 0.29432859178959403,
+        "median_IoU_aabb": 0.02218670350806791,
+        "acc25": 0.3569261880687563,
+        "acc50": 0.23281092012133467,
+        "acc75": 0.03614762386248736,
+        "acc50_aabb": 0.3185035389282103,
+        "angle_mae": 34.999289195137095,
+        "latency_ms": 322.61722605544566,
+        "boxes_per_sec": 3.099648497467826,
+        "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_2"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_PBD/validation/HBB_PBD_VALIDATION_EPOCH_2.json"
+    },
+    {
+      "epoch": 3,
+      "name": "HBB_PBD_epoch_3",
+      "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_3",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.84833164812942,
+        "mIoU": 0.2062804578472536,
+        "median_IoU": 0.009022185329449615,
+        "mIoU_aabb": 0.2969018465980558,
+        "median_IoU_aabb": 0.0336647521164532,
+        "acc25": 0.3564206268958544,
+        "acc50": 0.21562184024266937,
+        "acc75": 0.03058645096056623,
+        "acc50_aabb": 0.320525783619818,
+        "angle_mae": 34.795233569518736,
+        "latency_ms": 321.94663717974584,
+        "boxes_per_sec": 3.1061048152576,
+        "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_3"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_PBD/validation/HBB_PBD_VALIDATION_EPOCH_3.json"
+    },
+    {
+      "epoch": 4,
+      "name": "HBB_PBD_epoch_4",
+      "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_4",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.74721941354903,
+        "mIoU": 0.23110173805466863,
+        "median_IoU": 0.04089029720860367,
+        "mIoU_aabb": 0.3325696119754623,
+        "median_IoU_aabb": 0.07601863358767366,
+        "acc25": 0.40596562184024265,
+        "acc50": 0.2454499494438827,
+        "acc75": 0.03741152679474216,
+        "acc50_aabb": 0.36450960566228513,
+        "angle_mae": 33.56834611238032,
+        "latency_ms": 322.06621830030537,
+        "boxes_per_sec": 3.1049515384676774,
+        "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_4"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_PBD/validation/HBB_PBD_VALIDATION_EPOCH_4.json"
+    },
+    {
+      "epoch": 5,
+      "name": "HBB_PBD_epoch_5",
+      "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_5",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.79777553083923,
+        "mIoU": 0.23381286598706383,
+        "median_IoU": 0.029388823981601406,
+        "mIoU_aabb": 0.3320376518655054,
+        "median_IoU_aabb": 0.06402811044441606,
+        "acc25": 0.4011627906976744,
+        "acc50": 0.26061678463094035,
+        "acc75": 0.04221435793731042,
+        "acc50_aabb": 0.3647623862487361,
+        "angle_mae": 32.78003579025736,
+        "latency_ms": 321.65314178702897,
+        "boxes_per_sec": 3.108939009406953,
+        "checkpoint": "/workspace/experiments/hbb_pbd_checkpoints/checkpoint_epoch_5"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_PBD/validation/HBB_PBD_VALIDATION_EPOCH_5.json"
+    }
+  ],
+  "label": "HBB_PBD validation selection"
+}

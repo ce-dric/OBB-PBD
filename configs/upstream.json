@@ -1,0 +1,11 @@
+{
+  "repo_id": "nvidia/LocateAnything-3B",
+  "revision": "c32291ca5e996f5a7a485845b4f57a233936bba0",
+  "files": [
+    "config.json",
+    "modeling_locateanything.py",
+    "modeling_qwen2.py",
+    "generate_utils.py",
+    "mask_sdpa_utils.py"
+  ]
+}

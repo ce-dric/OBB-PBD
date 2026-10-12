@@ -1,0 +1,188 @@
+--- pristine/modeling_locateanything.py
++++ patched/modeling_locateanything.py
+@@ -199,17 +199,19 @@
+             output_attentions: Optional[bool] = None,
+             output_hidden_states: Optional[bool] = None,
+             return_dict: Optional[bool] = None,
++            inputs_embeds: Optional[torch.FloatTensor] = None,
++            **kwargs,
+     ) -> Union[Tuple, CausalLMOutputWithPast]:
+         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+
+-        input_embeds = self.language_model.get_input_embeddings()(input_ids)
++        input_embeds = self.language_model.get_input_embeddings()(input_ids).clone()
+
+         has_images = image_flags is not None and image_flags.sum() > 0
+
+         vit_embeds = self.extract_feature(pixel_values, image_grid_hws)
+
+         B, N, C = input_embeds.shape
+-        input_embeds = input_embeds.reshape(B * N, C)
++        input_embeds = input_embeds.reshape(B * N, C).clone()
+
+         if has_images:
+             filtered_vit_embeds = []
+--- pristine/modeling_qwen2.py
++++ patched/modeling_qwen2.py
+@@ -1267,6 +1267,39 @@
+
+         x0_len = find_prefix_seq_length_by_pe(position_ids).to(device=device)
+
++        # [obb-pbd] x0_len mask-token fallback
++        # A monotonic arange never drops, so find_prefix_seq_length_by_pe returns -1
++        # and create_block_diff_mask_by_pe_4d then treats the whole sequence as
++        # parallel blocks with an empty prefix: the coordinate slots cannot see the
++        # image or the prompt at all. During training the parallel block is exactly
++        # the text_mask_token_id region written by the collator, so its first index
++        # is the prefix length.
++        #
++        # LocateAnything calls this forward with input_ids=None and a pre-built
++        # inputs_embeds (the vision features are spliced in), which is why the
++        # boundary is recovered by matching the mask token's embedding row.
++        #
++        # The boundary is the mask region's first index MINUS ONE, i.e. the <box>
++        # trigger. generate() forwards [<box> duplicate, mask x (n_future - 1)] and
++        # reads all n_future logits, so its parallel window starts at <box>. Setting
++        # the boundary at the first mask token instead leaves <box> in the causal
++        # prefix, shifts every slot by one, and generation then emits text into the
++        # coordinate slots ('<box>silver airplane</ref>...', block valid 0.0%).
++        if (x0_len < 0).any():
++            _hits = None
++            if input_ids is not None:
++                _hits = input_ids == self.text_mask_token_id
++            elif inputs_embeds is not None and getattr(self, 'embed_tokens', None) is not None:
++                _ref = self.embed_tokens.weight[self.text_mask_token_id]
++                _hits = (inputs_embeds == _ref.to(inputs_embeds.dtype)).all(dim=-1)
++            if _hits is not None:
++                for _b in range(x0_len.shape[0]):
++                    if x0_len[_b] >= 0:
++                        continue
++                    _row = _hits[_b].nonzero()
++                    x0_len[_b] = (max(int(_row[0].item()) - 1, 0) if _row.numel() > 0
++                                  else _hits.shape[1])
++
+         def _prepare_block_mask_for_inference(attention_mask):
+             attention_mask = _prepare_4d_causal_attention_mask(
+                 attention_mask,
+@@ -1329,7 +1362,7 @@
+             )
+
+         elif self._attn_implementation == "sdpa":
+-            attention_mask = _prepare_block_mask_for_training() if self.training else _prepare_block_mask_for_inference(attention_mask)
++            attention_mask = _prepare_block_mask_for_training() if (self.training or input_ids is None) else _prepare_block_mask_for_inference(attention_mask)
+
+         else:
+             raise NotImplementedError(f'{self._attn_implementation=}')
+@@ -1496,6 +1529,7 @@
+         logits = logits.float()
+
+         loss = None
++        pos_loss_list = None
+         if labels is not None:
+
+             # Shift so that tokens < n predict n
+@@ -1514,7 +1548,7 @@
+             shift_input_ids = input_ids[..., :-1].contiguous()
+             shift_pos_masks = pos_masks[:, :-1]
+             shift_input_ids = shift_input_ids.view(-1)
+-            max_n_future_tokens = min(4, self.model.block_size)
++            max_n_future_tokens = getattr(self.model, 'block_size', 8)
+             pos_loss_list = torch.zeros(max_n_future_tokens, device=shift_logits.device)
+             shift_pos_masks = shift_pos_masks.reshape(-1)
+
+@@ -1531,22 +1565,15 @@
+             output = (logits,) + outputs[1:]
+             return (loss,) + output if loss is not None else output
+
+-        if self.training:
+-            return CausalLMOutputWithPast(
+-                loss=loss,
+-                logits=logits,
+-                past_key_values=outputs.past_key_values,
+-                hidden_states=outputs.hidden_states,
+-                attentions=outputs.attentions,
+-            ), pos_loss_list
+-
+-        return CausalLMOutputWithPast(
++        out_obj = CausalLMOutputWithPast(
+             loss=loss,
+             logits=logits,
+             past_key_values=outputs.past_key_values,
+             hidden_states=outputs.hidden_states,
+             attentions=outputs.attentions,
+         )
++        out_obj.pos_loss_list = pos_loss_list
++        return out_obj
+
+     def prepare_inputs_for_generation(
+         self, input_ids, past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
+@@ -1703,6 +1730,7 @@
+         pooled_logits = logits[torch.arange(batch_size, device=logits.device), sequence_lengths]
+
+         loss = None
++        pos_loss_list = None
+         if labels is not None:
+             labels = labels.to(logits.device)
+             if self.config.problem_type is None:
+--- pristine/generate_utils.py
++++ patched/generate_utils.py
+@@ -265,7 +265,9 @@
+             return 'empty_box'
+
+     end_target_ids = torch.tensor([box_end_token_id, null_token_id, im_end_token_id], device=probs.device)
+-    end_score = probs[5, end_target_ids].sum()
++    # [OBB-PBD PATCHED] block-length-derived coordinate count
++    _n_coords = probs.size(0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++    end_score = probs[_n_coords + 1, end_target_ids].sum()
+
+     if end_score >= end_thresh:
+             return 'legal_box'
+@@ -314,19 +316,20 @@
+     )
+     if box_type == 'empty_box':
+         # Handle the <box>none</box> case first
+-        return torch.tensor([
+-            box_start_token_id,
+-            none_token_id,
+-            box_end_token_id,
+-            token_ids['null_token_id'],
+-            token_ids['null_token_id'],
+-            token_ids['null_token_id']
+-        ], dtype=torch.long, device=probs.device)
++        # [OBB-PBD PATCHED] block-length-derived coordinate count
++        _L = probs.size(0)
++        _head = [box_start_token_id, none_token_id, box_end_token_id]
++        _pad = [token_ids['null_token_id']] * max(0, _L - len(_head))
++        return torch.tensor(
++            _head + _pad, dtype=torch.long, device=probs.device
++        )
+     elif box_type == 'illegal_box':
+         return None
+
+     # Extract probabilities at positions 1-4 and compute Top-K for all 4 positions at once
+-    pos_probs, pos_ids = torch.topk(probs[1:5], k=keep_k, dim=-1)
++    # [OBB-PBD PATCHED] block-length-derived coordinate count
++    _n_coords = probs.size(0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++    pos_probs, pos_ids = torch.topk(probs[1:1 + _n_coords], k=keep_k, dim=-1)
+     mask = (pos_ids >= coord_start_token_id) & (pos_ids <= coord_end_token_id)
+     has_valid = mask.any(dim=-1) # shape: [4]
+     if not has_valid.all():
+@@ -445,14 +448,16 @@
+         }
+     elif x0[0] == box_start_token_id:
+         coord_ix = 1
+-        for coord in x0[1:5]:
++        # [OBB-PBD PATCHED] block-length-derived coordinate count
++        _n_coords = len(x0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++        for coord in x0[1:1 + _n_coords]:
+             if coord_start_token_id <= coord <= coord_end_token_id:
+                 coord_ix += 1
+             else:
+                 break
+
+         # Standard 4-coordinate bbox: <box><x1><x2><y1><y2></box>
+-        if coord_ix == 5 and x0[5] == box_end_token_id:
++        if coord_ix == 1 + _n_coords and x0[coord_ix] == box_end_token_id:
+             return {
+                 "type": "coord_box",
+                 "tokens": x0,

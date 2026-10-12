@@ -1,0 +1,13 @@
+OBB-PBD
+Copyright (c) 2026 Chang Woo Song and Yeong Jun Koh
+
+This repository contains derivative works of LocateAnything-3B
+(https://huggingface.co/nvidia/LocateAnything-3B), distributed under the NVIDIA License (see LICENSE).
+The files in patches/LocateAnything-3B/ are modifications of the LocateAnything-3B remote code;
+the changes are described in patches/LocateAnything-3B/README.md.
+
+Qwen is licensed under the Qwen RESEARCH LICENSE AGREEMENT, Copyright (c) Alibaba Cloud. All Rights Reserved.
+(see licenses/QWEN_RESEARCH_LICENSE.txt)
+
+RefGeo / AVVG annotations: Copyright 2023 S-Lab, S-Lab License 1.0 (see licenses/REFGEO_S-LAB_LICENSE.txt).
+Target boxes derived from these annotations appear in the prediction files under experiments/.

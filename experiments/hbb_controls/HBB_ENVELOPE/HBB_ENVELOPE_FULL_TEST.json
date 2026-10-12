@@ -1,0 +1,38 @@
+{
+  "config": {
+    "max_eval": 0,
+    "start_index": 0,
+    "split": "test",
+    "checkpoint": [
+      "HBB_ENVELOPE_selected_epoch_5=/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5"
+    ],
+    "data_dir": "/workspace/data",
+    "subset": "avvg",
+    "target_mode": "hbb_envelope",
+    "corner_filter": "auto",
+    "out": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/HBB_ENVELOPE_FULL_TEST",
+    "progress": 250,
+    "device": "cuda:0",
+    "split_manifest": "",
+    "partition": null,
+    "predictions_out": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/HBB_ENVELOPE_FULL_TEST.predictions.jsonl"
+  },
+  "results": {
+    "HBB_ENVELOPE_selected_epoch_5": {
+      "samples": 6139,
+      "decoded_pct": 99.82081772275615,
+      "mIoU": 0.25270464004941806,
+      "median_IoU": 0.01949692044411587,
+      "mIoU_aabb": 0.34650102895811313,
+      "median_IoU_aabb": 0.07051376087733795,
+      "acc25": 0.43850790030949666,
+      "acc50": 0.29890861703860566,
+      "acc75": 0.031112559048705,
+      "acc50_aabb": 0.41586577618504644,
+      "angle_mae": 22.012463310613274,
+      "latency_ms": 322.7098520449526,
+      "boxes_per_sec": 3.0987588189923088,
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5"
+    }
+  }
+}

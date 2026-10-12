@@ -1,0 +1,26 @@
+{
+  "records": 6139,
+  "images": 120,
+  "image_shuffled_rotIoU": [
+    0.006254188826080973,
+    0.005052689043910747,
+    0.007513857334687737
+  ],
+  "same_image_fraction": 0.011402508551881414,
+  "image_shuffled_rotIoU_same_image": 0.255593409075963,
+  "image_shuffled_rotIoU_different_image": [
+    0.003378303932772068,
+    0.002705071000760264,
+    0.004107761809933613
+  ],
+  "share_of_residual_from_same_image": 0.465992651299502,
+  "image_shuffled_nonzero_fraction": 0.044632676331650106,
+  "loio_mean_box_prior_rotIoU": [
+    0.003756942402851725,
+    0.0024164411152129014,
+    0.005244375352678866
+  ],
+  "center_px_shuffled_to_own_matched_median": 224.3184661859117,
+  "center_px_shuffled_to_random_matched_median": 293.3237230910585,
+  "center_px_shuffled_to_shuffle_source_matched_median": 196.04022183215363
+}

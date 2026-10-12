@@ -1,0 +1,53 @@
+[
+  {
+    "index": 8,
+    "image_id": "289a4cc2-DJI_0005.JPG",
+    "question": "the bottom-most car",
+    "target_obb": "OrientedBox(cx=728.8320000000352, cy=514.1760000000231, w=95.67143492248677, h=41.56429886201286, theta_deg=27.594205981378337)",
+    "coords_raw_bins": [
+      666,
+      819,
+      744,
+      946
+    ],
+    "iou_aabb": 0.662817617103896,
+    "iou_rotated": 0.5317972680807455,
+    "saw_box": true,
+    "n_coords": 4,
+    "error": null
+  },
+  {
+    "index": 1322,
+    "image_id": "4eb04cdf-DJI_0188.JPG",
+    "question": "the blue bmw mid-size car in the top-middle",
+    "target_obb": "OrientedBox(cx=479.77238507696325, cy=148.85698721627867, w=44.88991755475344, h=21.358747328696108, theta_deg=166.12247019679035)",
+    "coords_raw_bins": [
+      444,
+      234,
+      494,
+      288
+    ],
+    "iou_aabb": 0.8675543482027734,
+    "iou_rotated": 0.595998468688259,
+    "saw_box": true,
+    "n_coords": 4,
+    "error": null
+  },
+  {
+    "index": 1811,
+    "image_id": "1dacb4c2-DJI_0238.JPG",
+    "question": "the brown skoda suv car in the bottom-middle",
+    "target_obb": "OrientedBox(cx=514.3039999999799, cy=505.85600000004194, w=32.6197447960528, h=15.705803049931, theta_deg=160.70995378073644)",
+    "coords_raw_bins": [
+      385,
+      856,
+      426,
+      998
+    ],
+    "iou_aabb": 0.0,
+    "iou_rotated": 0.0,
+    "saw_box": true,
+    "n_coords": 4,
+    "error": null
+  }
+]

@@ -1,0 +1,24 @@
+--- pristine/modeling_locateanything.py
++++ patched/modeling_locateanything.py
+@@ -199,17 +199,19 @@
+             output_attentions: Optional[bool] = None,
+             output_hidden_states: Optional[bool] = None,
+             return_dict: Optional[bool] = None,
++            inputs_embeds: Optional[torch.FloatTensor] = None,
++            **kwargs,
+     ) -> Union[Tuple, CausalLMOutputWithPast]:
+         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+
+-        input_embeds = self.language_model.get_input_embeddings()(input_ids)
++        input_embeds = self.language_model.get_input_embeddings()(input_ids).clone()
+
+         has_images = image_flags is not None and image_flags.sum() > 0
+
+         vit_embeds = self.extract_feature(pixel_values, image_grid_hws)
+
+         B, N, C = input_embeds.shape
+-        input_embeds = input_embeds.reshape(B * N, C)
++        input_embeds = input_embeds.reshape(B * N, C).clone()
+
+         if has_images:
+             filtered_vit_embeds = []

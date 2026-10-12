@@ -1,0 +1,38 @@
+{
+  "config": {
+    "max_eval": 0,
+    "start_index": 0,
+    "split": "test",
+    "checkpoint": [
+      "OBB_selected_epoch_5=/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5"
+    ],
+    "data_dir": "/workspace/data",
+    "subset": "avvg",
+    "target_mode": "obb",
+    "corner_filter": "auto",
+    "out": "/workspace/experiments/obb_pbd/OBB_FULL_TEST",
+    "progress": 250,
+    "device": "cuda:0",
+    "split_manifest": "",
+    "partition": null,
+    "predictions_out": "/workspace/experiments/obb_pbd/OBB_FULL_TEST.predictions.jsonl"
+  },
+  "results": {
+    "OBB_selected_epoch_5": {
+      "samples": 6139,
+      "decoded_pct": 99.86968561654993,
+      "mIoU": 0.3124465829839647,
+      "median_IoU": 0.0,
+      "mIoU_aabb": 0.34414164651812623,
+      "median_IoU_aabb": 0.08829905217748832,
+      "acc25": 0.4300374653852419,
+      "acc50": 0.3827985013845903,
+      "acc75": 0.22788727805831568,
+      "acc50_aabb": 0.4070695553021665,
+      "angle_mae": 9.59360419919662,
+      "latency_ms": 323.09747803279663,
+      "boxes_per_sec": 3.095041181034824,
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5"
+    }
+  }
+}

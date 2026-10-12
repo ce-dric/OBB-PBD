@@ -1,0 +1,139 @@
+{
+  "created_at_utc": "2026-08-13T09:32:48.280814+00:00",
+  "selection_source": "AVVG official-train-derived validation partition",
+  "selection_metric": "validation_mean_rotIoU",
+  "tie_break": "earlier epoch on exact stored-value tie",
+  "expected_validation_samples": 3956,
+  "selected_epoch": 5,
+  "selected_name": "HBB_ENVELOPE_epoch_5",
+  "selected_checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5",
+  "selected_validation_metrics": {
+    "samples": 3956,
+    "decoded_pct": 99.89888776541962,
+    "mIoU": 0.24223083640201323,
+    "median_IoU": 0.018959280045859006,
+    "mIoU_aabb": 0.3347500247037919,
+    "median_IoU_aabb": 0.0725439105569699,
+    "acc25": 0.4309908998988878,
+    "acc50": 0.2666835187057634,
+    "acc75": 0.033114256825075836,
+    "acc50_aabb": 0.3998988877654196,
+    "angle_mae": 23.80986254838028,
+    "latency_ms": 322.7863012776777,
+    "boxes_per_sec": 3.098024903912349,
+    "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5"
+  },
+  "candidates": [
+    {
+      "epoch": 1,
+      "name": "HBB_ENVELOPE_epoch_1",
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_1",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 100.0,
+        "mIoU": 0.1652151014119869,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.24998344954211466,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.3417593528816987,
+        "acc50": 0.11501516683518706,
+        "acc75": 0.0037917087967644083,
+        "acc50_aabb": 0.3033367037411527,
+        "angle_mae": 24.131195015158706,
+        "latency_ms": 323.2302255799035,
+        "boxes_per_sec": 3.093770077367956,
+        "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_1"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/validation/HBB_ENVELOPE_VALIDATION_EPOCH_1.json"
+    },
+    {
+      "epoch": 2,
+      "name": "HBB_ENVELOPE_epoch_2",
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_2",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 100.0,
+        "mIoU": 0.2033065729308093,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.29143923235765445,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.378159757330637,
+        "acc50": 0.20222446916076844,
+        "acc75": 0.01693629929221436,
+        "acc50_aabb": 0.3417593528816987,
+        "angle_mae": 24.25456026092056,
+        "latency_ms": 321.55421588812834,
+        "boxes_per_sec": 3.109895472021767,
+        "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_2"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/validation/HBB_ENVELOPE_VALIDATION_EPOCH_2.json"
+    },
+    {
+      "epoch": 3,
+      "name": "HBB_ENVELOPE_epoch_3",
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_3",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.9747219413549,
+        "mIoU": 0.2130491582413377,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.30316157722752546,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.3918099089989889,
+        "acc50": 0.2186552072800809,
+        "acc75": 0.016177957532861477,
+        "acc50_aabb": 0.3597067745197169,
+        "angle_mae": 23.84232803450312,
+        "latency_ms": 323.1324219197615,
+        "boxes_per_sec": 3.094706479959212,
+        "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_3"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/validation/HBB_ENVELOPE_VALIDATION_EPOCH_3.json"
+    },
+    {
+      "epoch": 4,
+      "name": "HBB_ENVELOPE_epoch_4",
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_4",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.82305358948433,
+        "mIoU": 0.2196613539431247,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.312099581123838,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.40141557128412536,
+        "acc50": 0.22522750252780585,
+        "acc75": 0.02249747219413549,
+        "acc50_aabb": 0.3693124368048534,
+        "angle_mae": 24.18293686542093,
+        "latency_ms": 321.1491081178098,
+        "boxes_per_sec": 3.1138183937697925,
+        "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_4"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/validation/HBB_ENVELOPE_VALIDATION_EPOCH_4.json"
+    },
+    {
+      "epoch": 5,
+      "name": "HBB_ENVELOPE_epoch_5",
+      "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.89888776541962,
+        "mIoU": 0.24223083640201323,
+        "median_IoU": 0.018959280045859006,
+        "mIoU_aabb": 0.3347500247037919,
+        "median_IoU_aabb": 0.0725439105569699,
+        "acc25": 0.4309908998988878,
+        "acc50": 0.2666835187057634,
+        "acc75": 0.033114256825075836,
+        "acc50_aabb": 0.3998988877654196,
+        "angle_mae": 23.80986254838028,
+        "latency_ms": 322.7863012776777,
+        "boxes_per_sec": 3.098024903912349,
+        "checkpoint": "/workspace/experiments/hbb_envelope_checkpoints/checkpoint_epoch_5"
+      },
+      "summary_path": "/workspace/experiments/hbb_controls/HBB_ENVELOPE/validation/HBB_ENVELOPE_VALIDATION_EPOCH_5.json"
+    }
+  ],
+  "label": "HBB_ENVELOPE validation selection"
+}

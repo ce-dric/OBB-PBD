@@ -1,0 +1,45 @@
+{
+  "config": {
+    "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5",
+    "samples": 60,
+    "split": "test",
+    "subset": "avvg",
+    "data_dir": "/workspace/data",
+    "device": "cuda:0",
+    "out": "/workspace/experiments/analysis/latency/PBD_THROUGHPUT",
+    "only": "",
+    "merge": ""
+  },
+  "results": [
+    {
+      "condition": "OBB parallel (block_size 8)",
+      "coords_per_block": 6,
+      "samples": 60,
+      "latency_ms_mean": 329.8202875773112,
+      "latency_ms_median": 329.7705078125,
+      "latency_ms_p95": 332.56866455078125,
+      "boxes_per_sec": 3.0319541813072854,
+      "note": "one forward, six geometry slots. This is what the paper measures as PBD."
+    },
+    {
+      "condition": "HBB parallel (block_size 6)",
+      "coords_per_block": 4,
+      "samples": 60,
+      "latency_ms_mean": 306.87117665608724,
+      "latency_ms_median": 306.57684326171875,
+      "latency_ms_p95": 309.4517822265625,
+      "boxes_per_sec": 3.258696404454783,
+      "note": "one forward, four coordinates, upstream layout, base weights."
+    },
+    {
+      "condition": "OBB sequential (6 forwards)",
+      "coords_per_block": 6,
+      "samples": 60,
+      "latency_ms_mean": 568.6494506835937,
+      "latency_ms_median": 568.8486938476562,
+      "latency_ms_p95": 571.1318969726562,
+      "boxes_per_sec": 1.7585526527773208,
+      "note": "one full-model prefill (image + prompt + <box>), then one cached language-model step per output token (six geometry tokens + </box>), greedy, no vision tower."
+    }
+  ]
+}

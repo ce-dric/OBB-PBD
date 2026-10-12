@@ -1,0 +1,62 @@
+--- pristine/generate_utils.py
++++ patched/generate_utils.py
+@@ -265,7 +265,9 @@
+             return 'empty_box'
+
+     end_target_ids = torch.tensor([box_end_token_id, null_token_id, im_end_token_id], device=probs.device)
+-    end_score = probs[5, end_target_ids].sum()
++    # [OBB-PBD PATCHED] block-length-derived coordinate count
++    _n_coords = probs.size(0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++    end_score = probs[_n_coords + 1, end_target_ids].sum()
+
+     if end_score >= end_thresh:
+             return 'legal_box'
+@@ -314,19 +316,20 @@
+     )
+     if box_type == 'empty_box':
+         # Handle the <box>none</box> case first
+-        return torch.tensor([
+-            box_start_token_id,
+-            none_token_id,
+-            box_end_token_id,
+-            token_ids['null_token_id'],
+-            token_ids['null_token_id'],
+-            token_ids['null_token_id']
+-        ], dtype=torch.long, device=probs.device)
++        # [OBB-PBD PATCHED] block-length-derived coordinate count
++        _L = probs.size(0)
++        _head = [box_start_token_id, none_token_id, box_end_token_id]
++        _pad = [token_ids['null_token_id']] * max(0, _L - len(_head))
++        return torch.tensor(
++            _head + _pad, dtype=torch.long, device=probs.device
++        )
+     elif box_type == 'illegal_box':
+         return None
+
+     # Extract probabilities at positions 1-4 and compute Top-K for all 4 positions at once
+-    pos_probs, pos_ids = torch.topk(probs[1:5], k=keep_k, dim=-1)
++    # [OBB-PBD PATCHED] block-length-derived coordinate count
++    _n_coords = probs.size(0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++    pos_probs, pos_ids = torch.topk(probs[1:1 + _n_coords], k=keep_k, dim=-1)
+     mask = (pos_ids >= coord_start_token_id) & (pos_ids <= coord_end_token_id)
+     has_valid = mask.any(dim=-1) # shape: [4]
+     if not has_valid.all():
+@@ -445,14 +448,16 @@
+         }
+     elif x0[0] == box_start_token_id:
+         coord_ix = 1
+-        for coord in x0[1:5]:
++        # [OBB-PBD PATCHED] block-length-derived coordinate count
++        _n_coords = len(x0) - 2  # HBB block 6 -> 4 coords, OBB block 8 -> 6
++        for coord in x0[1:1 + _n_coords]:
+             if coord_start_token_id <= coord <= coord_end_token_id:
+                 coord_ix += 1
+             else:
+                 break
+
+         # Standard 4-coordinate bbox: <box><x1><x2><y1><y2></box>
+-        if coord_ix == 5 and x0[5] == box_end_token_id:
++        if coord_ix == 1 + _n_coords and x0[coord_ix] == box_end_token_id:
+             return {
+                 "type": "coord_box",
+                 "tokens": x0,

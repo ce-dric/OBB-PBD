@@ -1,0 +1,138 @@
+{
+  "created_at_utc": "2026-08-12T18:19:20.334721+00:00",
+  "selection_source": "AVVG official-train-derived validation partition",
+  "selection_metric": "validation_mean_rotIoU",
+  "tie_break": "earlier epoch on exact stored-value tie",
+  "expected_validation_samples": 3956,
+  "selected_epoch": 5,
+  "selected_name": "OBB_epoch_5",
+  "selected_checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5",
+  "selected_validation_metrics": {
+    "samples": 3956,
+    "decoded_pct": 99.9494438827098,
+    "mIoU": 0.30338260988811205,
+    "median_IoU": 0.0,
+    "mIoU_aabb": 0.33248776560038423,
+    "median_IoU_aabb": 0.059662138828951605,
+    "acc25": 0.4314964610717897,
+    "acc50": 0.3746208291203236,
+    "acc75": 0.18806875631951467,
+    "acc50_aabb": 0.39635995955510617,
+    "angle_mae": 10.855015775251454,
+    "latency_ms": 314.870829741528,
+    "boxes_per_sec": 3.17590550010899,
+    "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5"
+  },
+  "candidates": [
+    {
+      "epoch": 1,
+      "name": "OBB_epoch_1",
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_1",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 100.0,
+        "mIoU": 0.2250192059946416,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.2513085973307387,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.32912032355915066,
+        "acc50": 0.2752780586450961,
+        "acc75": 0.12537917087967643,
+        "acc50_aabb": 0.29069767441860467,
+        "angle_mae": 12.359826733689994,
+        "latency_ms": 320.8114158525061,
+        "boxes_per_sec": 3.117096058887607,
+        "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_1"
+      },
+      "summary_path": "/workspace/experiments/obb_pbd/validation/OBB_VALIDATION_EPOCH_1.json"
+    },
+    {
+      "epoch": 2,
+      "name": "OBB_epoch_2",
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_2",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 100.0,
+        "mIoU": 0.2512447380377222,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.2790217186368602,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.35995955510616784,
+        "acc50": 0.3083923154701719,
+        "acc75": 0.15849342770475228,
+        "acc50_aabb": 0.32381193124368046,
+        "angle_mae": 12.110279633149757,
+        "latency_ms": 314.7291836493128,
+        "boxes_per_sec": 3.1773348388125666,
+        "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_2"
+      },
+      "summary_path": "/workspace/experiments/obb_pbd/validation/OBB_VALIDATION_EPOCH_2.json"
+    },
+    {
+      "epoch": 3,
+      "name": "OBB_epoch_3",
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_3",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.89888776541962,
+        "mIoU": 0.26732178518931593,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.29465738237235883,
+        "median_IoU_aabb": 0.0,
+        "acc25": 0.37917087967644086,
+        "acc50": 0.32457027300303337,
+        "acc75": 0.17719919110212334,
+        "acc50_aabb": 0.34529828109201216,
+        "angle_mae": 11.060215178866223,
+        "latency_ms": 330.4782989472565,
+        "boxes_per_sec": 3.0259172937694085,
+        "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_3"
+      },
+      "summary_path": "/workspace/experiments/obb_pbd/validation/OBB_VALIDATION_EPOCH_3.json"
+    },
+    {
+      "epoch": 4,
+      "name": "OBB_epoch_4",
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_4",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.87360970677452,
+        "mIoU": 0.2864180762351013,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.3160786006386128,
+        "median_IoU_aabb": 0.015414025313710916,
+        "acc25": 0.4006572295247725,
+        "acc50": 0.34782608695652173,
+        "acc75": 0.19413549039433772,
+        "acc50_aabb": 0.36804853387259856,
+        "angle_mae": 10.502400112091511,
+        "latency_ms": 319.48242115263645,
+        "boxes_per_sec": 3.130062669464491,
+        "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_4"
+      },
+      "summary_path": "/workspace/experiments/obb_pbd/validation/OBB_VALIDATION_EPOCH_4.json"
+    },
+    {
+      "epoch": 5,
+      "name": "OBB_epoch_5",
+      "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5",
+      "validation_metrics": {
+        "samples": 3956,
+        "decoded_pct": 99.9494438827098,
+        "mIoU": 0.30338260988811205,
+        "median_IoU": 0.0,
+        "mIoU_aabb": 0.33248776560038423,
+        "median_IoU_aabb": 0.059662138828951605,
+        "acc25": 0.4314964610717897,
+        "acc50": 0.3746208291203236,
+        "acc75": 0.18806875631951467,
+        "acc50_aabb": 0.39635995955510617,
+        "angle_mae": 10.855015775251454,
+        "latency_ms": 314.870829741528,
+        "boxes_per_sec": 3.17590550010899,
+        "checkpoint": "/workspace/experiments/obb_pbd_checkpoints/checkpoint_epoch_5"
+      },
+      "summary_path": "/workspace/experiments/obb_pbd/validation/OBB_VALIDATION_EPOCH_5.json"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+========================================================================================================
+  Parallel box decoding throughput, batch size 1, 1024 px imagery, sdpa attention
+  Quote the ratios, not the absolute BPS: no batching and no flash-attn.
+========================================================================================================
+condition                          coords   ms mean   ms med   ms p95     BPS
+--------------------------------------------------------------------------------------------------------
+OBB parallel (block_size 8)             6    329.82   329.77   332.57    3.03
+HBB parallel (block_size 6)             4    306.87   306.58   309.45    3.26
+OBB sequential (6 forwards)             6    568.65   568.85   571.13    1.76
+--------------------------------------------------------------------------------------------------------
+    OBB parallel (block_size 8)      one forward, six geometry slots. This is what the paper measures as PBD.
+    HBB parallel (block_size 6)      one forward, four coordinates, upstream layout, base weights.
+    OBB sequential (6 forwards)      one full-model prefill (image + prompt + <box>), then one cached language-model step per output token (six geometry tokens + </box>), greedy, no vision tower.
+--------------------------------------------------------------------------------------------------------
+  axis 1, cost of the extension: OBB is 1.075x the HBB latency while emitting 6 coordinates instead of 4
+  axis 2, benefit of parallel decoding: one forward is 1.72x faster than 6 sequential forwards for the same six coordinates
+========================================================================================================

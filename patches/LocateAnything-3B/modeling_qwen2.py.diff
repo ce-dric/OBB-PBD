@@ -1,0 +1,102 @@
+--- pristine/modeling_qwen2.py
++++ patched/modeling_qwen2.py
+@@ -1267,6 +1267,39 @@
+
+         x0_len = find_prefix_seq_length_by_pe(position_ids).to(device=device)
+
++        # [obb-pbd] x0_len mask-token fallback
++        # A monotonic arange never drops, so find_prefix_seq_length_by_pe returns -1
++        # and create_block_diff_mask_by_pe_4d then treats the whole sequence as
++        # parallel blocks with an empty prefix: the coordinate slots cannot see the
++        # image or the prompt at all. During training the parallel block is exactly
++        # the text_mask_token_id region written by the collator, so its first index
++        # is the prefix length.
++        #
++        # LocateAnything calls this forward with input_ids=None and a pre-built
++        # inputs_embeds (the vision features are spliced in), which is why the
++        # boundary is recovered by matching the mask token's embedding row.
++        #
++        # The boundary is the mask region's first index MINUS ONE, i.e. the <box>
++        # trigger. generate() forwards [<box> duplicate, mask x (n_future - 1)] and
++        # reads all n_future logits, so its parallel window starts at <box>. Setting
++        # the boundary at the first mask token instead leaves <box> in the causal
++        # prefix, shifts every slot by one, and generation then emits text into the
++        # coordinate slots ('<box>silver airplane</ref>...', block valid 0.0%).
++        if (x0_len < 0).any():
++            _hits = None
++            if input_ids is not None:
++                _hits = input_ids == self.text_mask_token_id
++            elif inputs_embeds is not None and getattr(self, 'embed_tokens', None) is not None:
++                _ref = self.embed_tokens.weight[self.text_mask_token_id]
++                _hits = (inputs_embeds == _ref.to(inputs_embeds.dtype)).all(dim=-1)
++            if _hits is not None:
++                for _b in range(x0_len.shape[0]):
++                    if x0_len[_b] >= 0:
++                        continue
++                    _row = _hits[_b].nonzero()
++                    x0_len[_b] = (max(int(_row[0].item()) - 1, 0) if _row.numel() > 0
++                                  else _hits.shape[1])
++
+         def _prepare_block_mask_for_inference(attention_mask):
+             attention_mask = _prepare_4d_causal_attention_mask(
+                 attention_mask,
+@@ -1329,7 +1362,7 @@
+             )
+
+         elif self._attn_implementation == "sdpa":
+-            attention_mask = _prepare_block_mask_for_training() if self.training else _prepare_block_mask_for_inference(attention_mask)
++            attention_mask = _prepare_block_mask_for_training() if (self.training or input_ids is None) else _prepare_block_mask_for_inference(attention_mask)
+
+         else:
+             raise NotImplementedError(f'{self._attn_implementation=}')
+@@ -1496,6 +1529,7 @@
+         logits = logits.float()
+
+         loss = None
++        pos_loss_list = None
+         if labels is not None:
+
+             # Shift so that tokens < n predict n
+@@ -1514,7 +1548,7 @@
+             shift_input_ids = input_ids[..., :-1].contiguous()
+             shift_pos_masks = pos_masks[:, :-1]
+             shift_input_ids = shift_input_ids.view(-1)
+-            max_n_future_tokens = min(4, self.model.block_size)
++            max_n_future_tokens = getattr(self.model, 'block_size', 8)
+             pos_loss_list = torch.zeros(max_n_future_tokens, device=shift_logits.device)
+             shift_pos_masks = shift_pos_masks.reshape(-1)
+
+@@ -1531,22 +1565,15 @@
+             output = (logits,) + outputs[1:]
+             return (loss,) + output if loss is not None else output
+
+-        if self.training:
+-            return CausalLMOutputWithPast(
+-                loss=loss,
+-                logits=logits,
+-                past_key_values=outputs.past_key_values,
+-                hidden_states=outputs.hidden_states,
+-                attentions=outputs.attentions,
+-            ), pos_loss_list
+-
+-        return CausalLMOutputWithPast(
++        out_obj = CausalLMOutputWithPast(
+             loss=loss,
+             logits=logits,
+             past_key_values=outputs.past_key_values,
+             hidden_states=outputs.hidden_states,
+             attentions=outputs.attentions,
+         )
++        out_obj.pos_loss_list = pos_loss_list
++        return out_obj
+
+     def prepare_inputs_for_generation(
+         self, input_ids, past_key_values=None, attention_mask=None, inputs_embeds=None, **kwargs
+@@ -1703,6 +1730,7 @@
+         pooled_logits = logits[torch.arange(batch_size, device=logits.device), sequence_lengths]
+
+         loss = None
++        pos_loss_list = None
+         if labels is not None:
+             labels = labels.to(logits.device)
+             if self.config.problem_type is None:
