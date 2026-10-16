@@ -2,7 +2,7 @@
 
 Code, training configuration, evaluation protocol and trained checkpoints for
 
-> Chang Woo Song and Yeong Jun Koh. **OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery.** *Remote Sensing* (MDPI), accepted 2026.
+> Chang Woo Song and Yeong Jun Koh. **OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery.** *Remote Sensing* **2026**, *18*(20), 3535. [https://doi.org/10.3390/rs18203535](https://doi.org/10.3390/rs18203535)
 
 OBB-PBD extends the Parallel Box Decoding (PBD) interface of [LocateAnything-3B](https://huggingface.co/nvidia/LocateAnything-3B) from a four-coordinate horizontal box to a six-slot oriented box `<box> cx cy w h sin2θ cos2θ </box>`. All six coordinate tokens are predicted in one forward pass of the language model, and the angle is recovered with a double-angle parameterization.
 
@@ -111,7 +111,19 @@ For Table 4 (image dependence), all three conditions for seed 1 are in `experime
 
 ## Checkpoints
 
-The LoRA adapters (language model, last six MoonViT blocks, and the fully trained `mlp1` projector) of all nine trained runs — OBB-PBD and the two matched controls, three seeds each — will be released on the Hugging Face Hub at **https://huggingface.co/ce-dric/OBB-PBD**. They are loaded on top of the patched backbone at the pinned revision.
+The LoRA adapters (language model, last six MoonViT blocks, and the fully trained `mlp1` projector) of all nine trained runs — OBB-PBD and the two matched controls, three seeds each — are available on the Hugging Face Hub at **https://huggingface.co/ce-dric/OBB-PBD**. Each run folder holds the checkpoint chosen on the validation split (`adapter_config.json`, `adapter_model.safetensors`), loaded on top of the patched backbone at the pinned revision.
+
+| Run | Folder | Selected epoch (seeds 1/2/3) | `--target-mode` |
+|---|---|---|---|
+| OBB-PBD | `obb_pbd/seed{1,2,3}` | 5 / 5 / 4 | `obb` |
+| HBB-envelope control | `hbb_envelope/seed{1,2,3}` | 5 / 5 / 5 | `hbb_envelope` |
+| HBB-PBD control | `hbb_pbd/seed{1,2,3}` | 5 / 5 / 5 | `hbb_corner` (with `--corner-filter off`) |
+
+```bash
+hf download ce-dric/OBB-PBD --include "obb_pbd/seed1/*" --local-dir /workspace/hf_ckpt
+python scripts/eval_pbd_direct.py --subset avvg --split test --max-eval 0 --device cuda:0 \
+  --checkpoint OBB_seed1=/workspace/hf_ckpt/obb_pbd/seed1 --out /workspace/runs/eval_s1
+```
 
 ## License
 
@@ -130,7 +142,10 @@ If you use this code or the checkpoints, please cite the paper:
   author  = {Song, Chang Woo and Koh, Yeong Jun},
   title   = {{OBB-PBD}: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery},
   journal = {Remote Sensing},
+  volume  = {18},
+  number  = {20},
+  pages   = {3535},
   year    = {2026},
-  note    = {Accepted; volume, pages and DOI to be added}
+  doi     = {10.3390/rs18203535}
 }
 ```

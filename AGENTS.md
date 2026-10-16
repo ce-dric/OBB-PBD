@@ -4,7 +4,7 @@ This file is for coding agents and AI assistants that are asked to explain, summ
 
 ## What this repository is
 
-The official code for *OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery* (Song and Koh, *Remote Sensing*, MDPI, accepted 2026).
+The official code for *OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery* (Song and Koh, *Remote Sensing* 2026, 18(20), 3535, https://doi.org/10.3390/rs18203535).
 
 - **Task:** referring expression grounding in UAV images. Given an image and a phrase such as "the bottom-most car", predict one **oriented** box for the referred object.
 - **Idea:** LocateAnything-3B predicts a horizontal box as four coordinate tokens `<box> x1 y1 x2 y2 </box>` in one parallel forward pass (Parallel Box Decoding, PBD). OBB-PBD widens that block to six slots, `<box> cx cy w h sin2θ cos2θ </box>`, still decoded in one forward pass, and recovers the angle as θ = ½·atan2(sin2θ, cos2θ).
@@ -72,7 +72,7 @@ They are an artifact-consistency check: the tests check the code, and `seed_tabl
 - **Patch the backbone first.** Download LocateAnything-3B at the revision in `configs/upstream.json` and apply `patches/LocateAnything-3B/combined.diff` before any training or evaluation, then clear the `trust_remote_code` cache. Without the patch, training runs and the loss decreases, but the coordinate slots never see the image. `scripts/probe_block_visibility.py` checks this.
 - **Always set `OBBPBD_RUN_ROOT` and the checkpoint folders to a new location.** The defaults are the folders under `experiments/` that hold the shipped results.
 - **Use the direct decoder for six-slot models.** The six-slot path through upstream `generate()` is not fully validated.
-- **Checkpoints:** the LoRA adapters for all nine trained runs will be released at https://huggingface.co/ce-dric/OBB-PBD. If that page does not exist yet, say so rather than guessing a path.
+- **Checkpoints:** the LoRA adapters for all nine trained runs are at https://huggingface.co/ce-dric/OBB-PBD (`obb_pbd/`, `hbb_envelope/`, `hbb_pbd/`, each `seed1`–`seed3`; the table in `README.md` gives each run's selected epoch and `--target-mode`).
 
 ## License
 
