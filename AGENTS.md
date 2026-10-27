@@ -4,7 +4,7 @@ This file is for coding agents and AI assistants that are asked to explain, summ
 
 ## What this repository is
 
-The official code for *OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery* (Song and Koh, *Remote Sensing* 2026, 18(20), 3535, https://doi.org/10.3390/rs18203535).
+The official code for *OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery* (Song and Koh, *Remote Sensing* 2026, 18(20), 3535, https://doi.org/10.3390/rs18203535; arXiv: https://arxiv.org/abs/2610.35450).
 
 - **Task:** referring expression grounding in UAV images. Given an image and a phrase such as "the bottom-most car", predict one **oriented** box for the referred object.
 - **Idea:** LocateAnything-3B predicts a horizontal box as four coordinate tokens `<box> x1 y1 x2 y2 </box>` in one parallel forward pass (Parallel Box Decoding, PBD). OBB-PBD widens that block to six slots, `<box> cx cy w h sin2θ cos2θ </box>`, still decoded in one forward pass, and recovers the angle as θ = ½·atan2(sin2θ, cos2θ).

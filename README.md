@@ -2,7 +2,7 @@
 
 Code, training configuration, evaluation protocol and trained checkpoints for
 
-> Chang Woo Song and Yeong Jun Koh. **OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery.** *Remote Sensing* **2026**, *18*(20), 3535. [https://doi.org/10.3390/rs18203535](https://doi.org/10.3390/rs18203535)
+> Chang Woo Song and Yeong Jun Koh. **OBB-PBD: Extending Parallel Box Decoding to Oriented Bounding Boxes for Referring Expression Grounding in Aerial Imagery.** *Remote Sensing* **2026**, *18*(20), 3535. [https://doi.org/10.3390/rs18203535](https://doi.org/10.3390/rs18203535) · arXiv: [2610.35450](https://arxiv.org/abs/2610.35450)
 
 OBB-PBD extends the Parallel Box Decoding (PBD) interface of [LocateAnything-3B](https://huggingface.co/nvidia/LocateAnything-3B) from a four-coordinate horizontal box to a six-slot oriented box `<box> cx cy w h sin2θ cos2θ </box>`. All six coordinate tokens are predicted in one forward pass of the language model, and the angle is recovered with a double-angle parameterization.
 
@@ -146,6 +146,9 @@ If you use this code or the checkpoints, please cite the paper:
   number  = {20},
   pages   = {3535},
   year    = {2026},
-  doi     = {10.3390/rs18203535}
+  doi     = {10.3390/rs18203535},
+  eprint  = {2610.35450},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
 }
 ```
