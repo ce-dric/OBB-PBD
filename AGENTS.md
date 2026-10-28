@@ -73,6 +73,7 @@ They are an artifact-consistency check: the tests check the code, and `seed_tabl
 - **Always set `OBBPBD_RUN_ROOT` and the checkpoint folders to a new location.** The defaults are the folders under `experiments/` that hold the shipped results.
 - **Use the direct decoder for six-slot models.** The six-slot path through upstream `generate()` is not fully validated.
 - **Checkpoints:** the LoRA adapters for all nine trained runs are at https://huggingface.co/ce-dric/OBB-PBD (`obb_pbd/`, `hbb_envelope/`, `hbb_pbd/`, each `seed1`–`seed3`; the table in `README.md` gives each run's selected epoch and `--target-mode`).
+- **Demo:** a Gradio Space built by the Hugging Face team runs the seed-1 OBB-PBD adapter: https://huggingface.co/spaces/hugging-apps/obb-pbd
 
 ## License
 

@@ -6,6 +6,8 @@ Code, training configuration, evaluation protocol and trained checkpoints for
 
 OBB-PBD extends the Parallel Box Decoding (PBD) interface of [LocateAnything-3B](https://huggingface.co/nvidia/LocateAnything-3B) from a four-coordinate horizontal box to a six-slot oriented box `<box> cx cy w h sin2θ cos2θ </box>`. All six coordinate tokens are predicted in one forward pass of the language model, and the angle is recovered with a double-angle parameterization.
 
+**Demo:** try it in the browser at [hugging-apps/obb-pbd](https://huggingface.co/spaces/hugging-apps/obb-pbd), a Hugging Face Space built by the Hugging Face team (seed-1 adapter).
+
 ![OBB-PBD architecture: (a) end-to-end grounding with six mask slots decoded in one forward pass; (b) the four-coordinate HBB block of LocateAnything vs. the six-slot OBB block of this work](assets/fig1_architecture.png)
 
 ## Results
